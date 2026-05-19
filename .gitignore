@@ -1,0 +1,23 @@
+# Python venv
+backend/.venv/
+
+# Env files
+backend/.env
+**/.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Vector store DB
+backend/MyDB1/
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# macOS
+.DS_Store
