@@ -636,6 +636,17 @@ body::after {
   border-color: rgba(124, 58, 237, 0.45);
 }
 
+/* the discussion currently displayed in the chat area */
+.history-item.viewing {
+  background: rgba(124, 58, 237, 0.22);
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: inset 3px 0 0 var(--accent-purple, #7c3aed);
+}
+
+.history-item.viewing .history-item-title {
+  color: #ffffff;
+}
+
 /* Checkbox */
 .item-checkbox {
   width: 18px;

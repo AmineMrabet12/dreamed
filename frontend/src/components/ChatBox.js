@@ -301,11 +301,23 @@ const ChatBox = () => {
     setChatHistory(function(prev) { return prev.filter(function(item) { return item.id !== id; }); });
     setSelectedIds(function(prev) { var n = new Set(prev); n.delete(id); return n; });
     if (selectedDiscussion && selectedDiscussion.id === id) setSelectedDiscussion(null);
-    if (currentHistoryId === id) setCurrentHistoryId(null);
+    /* if the deleted item is the active in-progress session, also clear the
+       working messages so further input starts a fresh history entry instead
+       of being silently dropped (currentHistoryId would be stale) */
+    if (currentHistoryId === id) {
+      setCurrentHistoryId(null);
+      setMessages([]);
+    }
   };
 
   const deleteSelected = function() {
     setChatHistory(function(prev) { return prev.filter(function(item) { return !selectedIds.has(item.id); }); });
+    /* same orphan-state cleanup as deleteOne, but for batch deletion */
+    if (selectedDiscussion && selectedIds.has(selectedDiscussion.id)) setSelectedDiscussion(null);
+    if (currentHistoryId && selectedIds.has(currentHistoryId)) {
+      setCurrentHistoryId(null);
+      setMessages([]);
+    }
     setSelectedIds(new Set());
   };
 
@@ -343,17 +355,23 @@ const ChatBox = () => {
     setChatHistory([]);
     setSelectedIds(new Set());
     setCurrentHistoryId(null);
+    /* also reset the chat area so we don't keep showing a discussion that
+       no longer exists in history */
+    setSelectedDiscussion(null);
+    setMessages([]);
     localStorage.removeItem("chatHistory");
   };
 
   const selectDiscussion = function(discussion) {
     setSelectedDiscussion(discussion);
-    setIsHistoryVisible(false);
+    /* keep the sidebar open so the user can switch between discussions
+       and the active item stays highlighted while reading */
   };
 
   const toggleHistory = function() {
     setIsHistoryVisible(function(v) { return !v; });
-    setSelectedDiscussion(null);
+    /* do NOT clear selectedDiscussion here — opening/closing the sidebar
+       must not change which conversation is being displayed in the chat area */
   };
 
   /* ── derived ─────────────────────────────────────────────────────── */
@@ -481,11 +499,12 @@ const ChatBox = () => {
                 {filteredHistory.length > 0 ? (
                   filteredHistory.map(function(discussion) {
                     var isSelected = selectedIds.has(discussion.id);
+                    var isViewing  = selectedDiscussion && selectedDiscussion.id === discussion.id;
                     var isEditing  = editingId === discussion.id;
                     var msgCount   = discussion.messages ? Math.floor(discussion.messages.length / 2) : 1;
                     return (
                       <li key={discussion.id}
-                        className={"history-item" + (isSelected ? " selected" : "")}
+                        className={"history-item" + (isSelected ? " selected" : "") + (isViewing ? " viewing" : "")}
                         onClick={function() {
                           if (isEditing) return;
                           if (selCount > 0) {
