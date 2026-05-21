@@ -1,25 +1,14 @@
+# Env
+python-dotenv>=1.0.0
+
 # Web framework
 fastapi[standard]==0.115.8
 uvicorn[standard]==0.34.0
 python-multipart==0.0.20
 
 # Data
-pandas==2.2.3
 pydantic==2.10.6
 
-# LangChain stack
-langchain==0.3.19
-langchain-community==0.3.18
-langchain-core>=0.3.37,<1.0.0
-langchain-text-splitters==0.3.6
-langchain-huggingface==0.1.2
-langchain-ollama<0.3
-
-# Embeddings
-sentence-transformers==3.4.1
-
-# Vector store
-chromadb==0.6.3
-
-# PDF support
-pypdf==5.3.0
+# LangChain + Gemini
+langchain-core>=1.2.0
+langchain-google-genai>=4.0.0

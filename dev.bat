@@ -24,15 +24,6 @@ if not exist backend\.venv\Scripts\fastapi.exe (
     pause & exit /b 1
 )
 
-ollama --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo  [ERREUR] Ollama n'est pas installe ou pas dans le PATH.
-    echo  Telechargez-le sur : https://ollama.com/download
-    echo  Puis tirez le modele  : ollama pull deepseek-r1:8b
-    echo.
-    pause & exit /b 1
-)
-
 :: ── Backend ─────────────────────────────────────────────────────────
 echo  Demarrage du backend  (port 8000)...
 start "Dreamex - Backend" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\fastapi dev app/main.py --port 8000"

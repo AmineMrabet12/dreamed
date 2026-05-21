@@ -86,16 +86,9 @@ echo  ================================================
 echo              Installation terminee !
 echo  ================================================
 echo.
-echo  ETAPES SUIVANTES :
+echo  ETAPE SUIVANTE :
 echo.
-echo  1. Installez Ollama (si pas encore fait) :
-echo       https://ollama.com/download
-echo.
-echo  2. Telechargez le modele IA dans un terminal :
-echo       ollama pull deepseek-r1:8b
-echo     (peut prendre plusieurs minutes selon la connexion)
-echo.
-echo  3. Lancez le projet avec :
+echo  Lancez le projet avec :
 echo       dev.bat
 echo.
 pause
